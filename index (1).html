@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fatima — Product Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blush: #F2D5D5;
+    --sand: #EDE3D5;
+    --sage: #C8D5C0;
+    --lavender: #D5D0E8;
+    --cream: #FAF7F2;
+    --warm: #3C3530;
+    --mid: #7A6E68;
+    --accent1: #C9685A;
+    --accent2: #6B7F5C;
+    --accent3: #7B6EA8;
+    --font: 'Plus Jakarta Sans', sans-serif;
+    --font-serif: 'Cormorant Garamond', serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--warm);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BLOBS ── */
+  .bg-blobs { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35; }
+  .blob-1 { width: 500px; height: 500px; background: var(--blush); top: -100px; right: -100px; animation: float1 15s ease-in-out infinite; }
+  .blob-2 { width: 400px; height: 400px; background: var(--sage); bottom: 10%; left: -80px; animation: float2 18s ease-in-out infinite; }
+  .blob-3 { width: 300px; height: 300px; background: var(--lavender); top: 50%; left: 40%; animation: float3 12s ease-in-out infinite; }
+
+  @keyframes float1 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(-30px,20px) scale(1.05)} 66%{transform:translate(20px,-30px) scale(0.95)} }
+  @keyframes float2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(40px,-20px) scale(1.08)} }
+  @keyframes float3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-20px,30px) scale(0.92)} }
+
+  /* ── PAGE ── */
+  .page { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 40px 32px; }
+
+  /* ── HERO ── */
+  .hero-card {
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.8);
+    border-radius: 24px; padding: 52px 60px; margin-bottom: 24px;
+    display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: end;
+    box-shadow: 0 8px 40px rgba(44,37,32,0.06);
+    opacity: 0; transform: translateY(30px); animation: cardIn 0.8s ease forwards;
+  }
+  @keyframes cardIn { to { opacity:1; transform:translateY(0); } }
+  .pre-label { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .pre-dot { width: 8px; height: 8px; background: var(--accent1); border-radius: 50%; animation: dotPulse 2s ease-in-out infinite; }
+  @keyframes dotPulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:0.6} }
+  .pre-text { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent1); font-weight: 500; }
+
+  /* ══════════════════════════════════
+     EFFETS HERO — PREMIÈRE SECTION
+  ══════════════════════════════════ */
+
+  /* Nom avec shimmer doré animé */
+  .hero-person-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4.5vw, 54px); font-weight: 600; line-height: 1;
+    letter-spacing: -0.5px; margin-bottom: 6px;
+    background: linear-gradient(90deg, #2C2520 0%, #2C2520 30%, #C9A96E 50%, #2C2520 70%, #2C2520 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: nameShine 4s linear infinite;
+  }
+  @keyframes nameShine {
+    0%   { background-position: 200% center; }
+    100% { background-position: -200% center; }
+  }
+
+  /* Titre "Stratégie Produit" — apparition lettre par lettre */
+  .hero-title-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 5vw, 62px); font-weight: 300; line-height: 1;
+    letter-spacing: -1px; margin-bottom: 18px; color: var(--warm);
+    opacity: 0; animation: heroTitleIn 0.8s 0.5s ease forwards;
+  }
+  @keyframes heroTitleIn {
+    from { opacity: 0; transform: translateY(12px); filter: blur(4px); }
+    to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+  }
+  .hero-title-line em { font-style: normal; color: var(--warm); }
+
+  /* Sous-titre — apparition décalée */
+  .hero-subtitle {
+    font-family: var(--font); font-size: 11px; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--mid); font-weight: 400; margin-bottom: 22px;
+    opacity: 0; animation: heroTitleIn 0.8s 0.8s ease forwards;
+  }
+
+  /* Bio — apparition décalée */
+  .hero-bio {
+    font-family: var(--font); font-size: 14px; line-height: 1.85;
+    color: var(--mid); font-weight: 300;
+    opacity: 0; animation: heroTitleIn 0.8s 1.0s ease forwards;
+  }
+
+  /* Pré-label — slide depuis gauche */
+  .pre-label {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    opacity: 0; animation: preLabelIn 0.6s 0.2s ease forwards;
+  }
+  @keyframes preLabelIn {
+    from { opacity: 0; transform: translateX(-16px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Stat pills — compteur animé */
+  .stat-n {
+    font-family: var(--font-serif); font-size: 34px; font-weight: 600;
+    color: var(--accent1); display: block; line-height: 1; transition: color 0.3s;
+  }
+
+  /* Particules flottantes dans le hero */
+  .hero-particle {
+    position: absolute; border-radius: 50%; pointer-events: none;
+    animation: particleFloat var(--dur, 6s) ease-in-out infinite;
+    animation-delay: var(--del, 0s);
+    opacity: var(--op, 0.4);
+  }
+  @keyframes particleFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%       { transform: translate(var(--tx, 10px), var(--ty, -15px)) scale(1.1); }
+    66%       { transform: translate(calc(var(--tx, 10px) * -0.5), var(--ty2, 8px)) scale(0.9); }
+  }
+
+  /* Bouton retour en haut */
+  .back-to-top {
+    position: fixed; bottom: 90px; right: 28px; z-index: 200;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: white;
+    border: 1px solid rgba(44,37,32,0.1);
+    box-shadow: 0 4px 16px rgba(44,37,32,0.12);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 18px;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity 0.3s, transform 0.3s, box-shadow 0.3s, background 0.3s;
+    color: var(--warm);
+  }
+  .back-to-top.visible { opacity: 1; transform: translateY(0); }
+  .back-to-top:hover {
+    background: var(--blush); box-shadow: 0 6px 20px rgba(201,104,90,0.2);
+    transform: translateY(-3px);
+  }
+
+  /* ── CONTACT CHIPS — effets individuels ── */
+  .contact-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.7); border: 1px solid rgba(44,37,32,0.1);
+    border-radius: 100px; padding: 7px 16px; font-size: 12px;
+    color: var(--warm); font-weight: 400; cursor: pointer;
+    text-decoration: none; font-family: var(--font);
+    transition: background 0.3s, border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .chip-icon { font-size: 11px; display: inline-block; }
+  .chip-text { transition: letter-spacing 0.3s; }
+
+  /* ☎ Téléphone — vibration */
+  .chip-phone { cursor: pointer; }
+  .chip-ring { display: inline-block; transition: transform 0.1s; }
+  .chip-phone:hover { background: var(--blush); border-color: var(--accent1); color: var(--accent1); transform: translateY(-2px); box-shadow: 0 5px 16px rgba(201,104,90,0.2); }
+  .chip-phone:hover .chip-ring { animation: ringVibrate 0.4s ease; }
+  @keyframes ringVibrate {
+    0%,100%{transform:rotate(0)} 15%{transform:rotate(-18deg)} 30%{transform:rotate(16deg)}
+    45%{transform:rotate(-12deg)} 60%{transform:rotate(10deg)} 75%{transform:rotate(-6deg)} 90%{transform:rotate(4deg)}
+  }
+  .chip-phone:hover .chip-text { letter-spacing: 0.8px; }
+
+  /* 📍 Localisation — rebond du pin */
+  .chip-location:hover { background: rgba(213,208,232,0.4); border-color: var(--accent3); color: var(--accent3); transform: translateY(-2px); box-shadow: 0 5px 16px rgba(123,110,168,0.15); }
+  .chip-location:hover .chip-icon { animation: pinBounce 0.5s cubic-bezier(0.34,1.7,0.64,1); }
+  @keyframes pinBounce {
+    0%{transform:translateY(0) scale(1)} 40%{transform:translateY(-6px) scale(1.2)}
+    70%{transform:translateY(2px) scale(0.95)} 100%{transform:translateY(0) scale(1)}
+  }
+
+  /* 🌐 Portfolio — rotation globe */
+  .chip-portfolio:hover { background: rgba(200,213,192,0.4); border-color: var(--accent2); color: var(--accent2); transform: translateY(-2px); box-shadow: 0 5px 16px rgba(107,127,92,0.15); }
+  .chip-portfolio:hover .chip-icon { animation: globeSpin 0.6s ease; }
+  @keyframes globeSpin {
+    0%{transform:rotate(0) scale(1)} 50%{transform:rotate(180deg) scale(1.2)} 100%{transform:rotate(360deg) scale(1)}
+  }
+
+  /* LinkedIn — pulse bleu */
+  .chip-in {
+    font-size: 10px; font-weight: 800; display: inline-flex; align-items: center;
+    justify-content: center; width: 16px; height: 16px; border-radius: 3px;
+    background: #0A66C2; color: white; transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .chip-linkedin:hover { background: rgba(10,102,194,0.08); border-color: #0A66C2; color: #0A66C2; transform: translateY(-2px); box-shadow: 0 5px 16px rgba(10,102,194,0.2); }
+  .chip-linkedin:hover .chip-in { transform: scale(1.2); animation: linkedinPulse 0.8s ease; }
+  @keyframes linkedinPulse {
+    0%,100%{box-shadow:0 0 0 0 rgba(10,102,194,0)} 50%{box-shadow:0 0 0 6px rgba(10,102,194,0.2)}
+  }
+
+  /* Tool tags */
+  .tool-tag {
+    font-family: var(--font); font-size: 12px; font-weight: 500; padding: 7px 16px; border-radius: 10px;
+    background: white; border: 1px solid rgba(44,37,32,0.08); color: var(--warm);
+    cursor: default; transition: border-color 0.25s, background 0.25s;
+  }
+  .tool-tag:hover { background: var(--sand); border-color: rgba(44,37,32,0.14); }
+
+  /* Exp pills */
+  .exp-pill {
+    font-family: var(--font); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; font-weight: 500;
+    padding: 3px 12px; border-radius: 100px; background: var(--sand); color: var(--mid);
+    cursor: default; transition: background 0.25s, color 0.25s;
+  }
+  .exp-pill:hover { background: rgba(200,190,180,0.4); color: var(--warm); }
+
+  /* ── SOFT SKILLS — effet bluffant ── */
+  .soft-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  .soft-word {
+    font-family: var(--font); font-size: 12px; font-weight: 500;
+    color: var(--mid); padding: 8px 18px; border-radius: 100px;
+    background: white; border: 1px solid rgba(44,37,32,0.08);
+    cursor: default; position: relative; overflow: hidden;
+    transition: color 0.3s, border-color 0.3s, box-shadow 0.3s;
+    display: inline-flex; align-items: center; gap: 0px;
+  }
+
+  /* Shimmer sweep en repos */
+  .soft-word::before {
+    content: '';
+    position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    animation: softShimmer 3.5s ease-in-out infinite;
+    animation-delay: var(--sd, 0s);
+  }
+
+  @keyframes softShimmer {
+    0%   { left: -100%; opacity: 0; }
+    20%  { opacity: 1; }
+    50%  { left: 140%; opacity: 1; }
+    100% { left: 140%; opacity: 0; }
+  }
+
+  /* Bounce au hover */
+  .soft-word:hover {
+    animation: softBounce 0.5s cubic-bezier(0.34, 1.8, 0.64, 1) forwards;
+    border-color: var(--accent1); color: var(--warm);
+    box-shadow: 0 6px 20px rgba(201,104,90,0.15);
+    z-index: 2;
+  }
+
+  @keyframes softBounce {
+    0%   { transform: scale(1)    translateY(0); }
+    40%  { transform: scale(1.05) translateY(-3px); }
+    70%  { transform: scale(0.98) translateY(1px); }
+    100% { transform: scale(1)    translateY(0); }
+  }
+
+  /* Emoji qui pop au hover */
+  .soft-word .sw-emoji {
+    display: inline-block;
+    max-width: 0; overflow: hidden; opacity: 0;
+    transition: max-width 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+    font-size: 14px;
+  }
+  .soft-word:hover .sw-emoji {
+    max-width: 24px; opacity: 1; margin-right: 5px;
+  }
+
+  /* Vague d'ondulation automatique sur les soft skills */
+  .soft-word:nth-child(1)  { --sd: 0s;    animation-delay: 0s; }
+  .soft-word:nth-child(2)  { --sd: 0.4s;  }
+  .soft-word:nth-child(3)  { --sd: 0.8s;  }
+  .soft-word:nth-child(4)  { --sd: 1.2s;  }
+  .soft-word:nth-child(5)  { --sd: 1.6s;  }
+  .soft-word:nth-child(6)  { --sd: 2.0s;  }
+  .soft-word:nth-child(7)  { --sd: 2.4s;  }
+  .soft-word:nth-child(8)  { --sd: 2.8s;  }
+
+  /* Stat pills */
+  .stat-pill {
+    background: white; border: 1px solid rgba(44,37,32,0.08); border-radius: 14px;
+    padding: 14px 22px; text-align: center; min-width: 110px;
+    box-shadow: 0 2px 8px rgba(44,37,32,0.04);
+    transition: box-shadow 0.25s, border-color 0.25s;
+  }
+  .stat-pill:hover { box-shadow: 0 4px 14px rgba(44,37,32,0.08); border-color: rgba(44,37,32,0.14); }
+  .stat-n { font-family: var(--font-serif); font-size: 34px; font-weight: 600; color: var(--accent1); display: block; line-height: 1; }
+  .stat-l { font-family: var(--font); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--mid); margin-top: 4px; }
+
+  /* Form-item hover */
+  .form-item {
+    display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: flex-start;
+    margin-bottom: 12px; padding: 16px;
+    border-radius: 14px; background: white;
+    border: 1px solid rgba(44,37,32,0.05);
+    border-left: 3px solid transparent;
+    box-shadow: 0 2px 12px rgba(44,37,32,0.07), 0 1px 3px rgba(44,37,32,0.04);
+    transition: box-shadow 0.4s, transform 0.4s, border-left-color 0.4s;
+    position: relative; overflow: hidden;
+  }
+
+  /* Lumière qui glisse au hover */
+  .form-item::after {
+    content: '';
+    position: absolute; top: 0; left: -80%;
+    width: 60%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(242,213,213,0.4), transparent);
+    transition: left 0.6s ease;
+    pointer-events: none;
+  }
+  .form-item:hover::after { left: 130%; }
+
+  .form-item:last-child { margin-bottom: 0; }
+  .form-item:hover {
+    box-shadow: 0 8px 28px rgba(44,37,32,0.1), 0 2px 6px rgba(44,37,32,0.05);
+    transform: translateX(4px);
+    border-left-color: var(--accent1);
+  }
+
+  .form-marker {
+    width: 32px; height: 32px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--blush) 0%, #F0C8C8 100%);
+    box-shadow: 0 2px 8px rgba(201,104,90,0.18);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s;
+  }
+  .form-marker svg { width: 14px; height: 14px; }
+  .form-item:hover .form-marker {
+    transform: scale(1.18) rotate(-8deg);
+    box-shadow: 0 4px 14px rgba(201,104,90,0.35);
+  }
+
+  /* Exp-item */
+  .exp-item {
+    margin-bottom: 12px; padding: 16px;
+    border-radius: 14px; background: white;
+    border: 1px solid rgba(44,37,32,0.05);
+    border-left: 3px solid transparent;
+    box-shadow: 0 2px 12px rgba(44,37,32,0.07), 0 1px 3px rgba(44,37,32,0.04);
+    transition: box-shadow 0.4s, transform 0.4s, border-left-color 0.4s;
+    position: relative; overflow: hidden;
+  }
+  .exp-item::after {
+    content: '';
+    position: absolute; top: 0; left: -80%;
+    width: 60%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(200,213,192,0.35), transparent);
+    transition: left 0.6s ease;
+    pointer-events: none;
+  }
+  .exp-item:hover::after { left: 130%; }
+  .exp-item:last-child { margin-bottom: 0; }
+  .exp-item:hover {
+    box-shadow: 0 8px 28px rgba(44,37,32,0.1), 0 2px 6px rgba(44,37,32,0.05);
+    transform: translateX(4px);
+    border-left-color: var(--accent2);
+  }
+
+  /* Glow pulse quand la carte apparaît */
+  @keyframes borderPulse {
+    0%   { opacity: 1; transform: translateX(0); border-left-color: var(--accent1); box-shadow: 0 2px 12px rgba(44,37,32,0.07), -6px 0 16px rgba(201,104,90,0.35); }
+    50%  { border-left-color: var(--blush); box-shadow: 0 2px 12px rgba(44,37,32,0.07), -2px 0 6px rgba(201,104,90,0.1); }
+    100% { border-left-color: transparent; box-shadow: 0 2px 12px rgba(44,37,32,0.07), 0 1px 3px rgba(44,37,32,0.04); }
+  }
+
+  @keyframes borderPulseGreen {
+    0%   { opacity: 1; transform: translateX(0); border-left-color: var(--accent2); box-shadow: 0 2px 12px rgba(44,37,32,0.07), -6px 0 16px rgba(107,127,92,0.35); }
+    50%  { border-left-color: var(--sage); box-shadow: 0 2px 12px rgba(44,37,32,0.07), -2px 0 6px rgba(107,127,92,0.1); }
+    100% { border-left-color: transparent; box-shadow: 0 2px 12px rgba(44,37,32,0.07), 0 1px 3px rgba(44,37,32,0.04); }
+  }
+
+  .form-item.reveal-child.in {
+    animation: borderPulse 1.4s cubic-bezier(0.22,1,0.36,1) forwards;
+    animation-delay: var(--pulse-delay, 0.2s);
+  }
+  .exp-item.reveal-child.in {
+    animation: borderPulseGreen 1.4s cubic-bezier(0.22,1,0.36,1) forwards;
+    animation-delay: var(--pulse-delay, 0.2s);
+  }
+  .tool-tag {
+    font-family: var(--font); font-size: 12px; font-weight: 500;
+    padding: 8px 16px; border-radius: 10px;
+    background: white; border: 1px solid rgba(44,37,32,0.08); color: var(--warm);
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: border-color 0.25s, background 0.25s, box-shadow 0.3s, transform 0.25s;
+    position: relative; overflow: visible;
+  }
+  .tool-tag svg { flex-shrink: 0; border-radius: 4px; }
+  .tool-tag:hover { background: #FFFFFF; border-color: rgba(242,213,213,0.6); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(44,37,32,0.06); }
+
+  /* ── TOOLTIP ── */
+  .tool-tag .tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(6px);
+    background: #FDF0F0;
+    color: var(--mid);
+    border: 1px solid white;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: 8px 14px;
+    border-radius: 10px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 999;
+    box-shadow: 0 4px 16px rgba(44,37,32,0.08);
+    letter-spacing: 0.2px;
+  }
+  .tool-tag .tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #FDF0F0;
+  }
+  .tool-tag:hover .tooltip,
+  .tool-tag.tooltip-open .tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .magic-btn { position: relative; }
+
+  /* Particule scintillante */
+  .sparkle-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    border-radius: 50%;
+    animation: sparkle-fly 0.7s ease-out forwards;
+  }
+
+  @keyframes sparkle-fly {
+    0%   { opacity: 1; transform: translate(0,0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--sx), var(--sy)) scale(0); }
+  }
+
+  /* Lueur au survol */
+  .magic-btn:hover {
+    box-shadow: 0 0 12px rgba(201,169,110,0.15), 0 4px 14px rgba(44,37,32,0.08);
+    transform: translateY(-2px);
+  }
+
+  /* ══════════════════════════════════
+     ANIMATIONS D'ENTRÉE PROGRESSIVES
+  ══════════════════════════════════ */
+
+  /* Base — tout commence invisible */
+  .reveal       { opacity: 0; }
+  .reveal.in    { opacity: 1; }
+
+  /* Cards gauche — glissent depuis la gauche + fade */
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-28px) translateY(10px);
+    transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1),
+                transform 0.6s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal-left.in { opacity: 1; transform: translateX(0) translateY(0); }
+
+  /* Cards droite — glissent depuis la droite + fade */
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(28px) translateY(10px);
+    transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1),
+                transform 0.6s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal-right.in { opacity: 1; transform: translateX(0) translateY(0); }
+
+  /* Titres de section — fade + ligne qui s'étend */
+  .sec-title {
+    font-family: var(--font); font-size: 13px; font-weight: 600;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 24px; display: flex; align-items: center; gap: 12px;
+  }
+  .sec-title .dot-color { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .sec-title::after {
+    content:''; flex:1; height:1px;
+    background: rgba(44,37,32,0.08);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.8s cubic-bezier(0.22,1,0.36,1) 0.3s;
+  }
+  .sec-title.in::after { transform: scaleX(1); }
+
+  /* Items enfants — glissement depuis la gauche */
+  .reveal-child {
+    opacity: 0;
+    transform: translateX(-18px);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal-child.in {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  /* Bordure gauche colorée — s'allume à l'entrée, séparée */
+  .form-item.reveal-child.in { border-left-color: var(--accent1); transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1), border-left-color 0s, box-shadow 0.5s; animation: borderGlowRose 1.4s ease forwards; animation-delay: var(--pulse-delay, 0.2s); }
+  .exp-item.reveal-child.in  { border-left-color: var(--accent2); transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1), border-left-color 0s, box-shadow 0.5s; animation: borderGlowGreen 1.4s ease forwards; animation-delay: var(--pulse-delay, 0.2s); }
+  @keyframes borderGlowRose  { 0%{box-shadow:0 2px 12px rgba(44,37,32,0.07),-6px 0 16px rgba(201,104,90,0.4)} 60%{box-shadow:0 2px 12px rgba(44,37,32,0.07),-2px 0 6px rgba(201,104,90,0.1)} 100%{box-shadow:0 2px 12px rgba(44,37,32,0.07),0 1px 3px rgba(44,37,32,0.04);border-left-color:transparent} }
+  @keyframes borderGlowGreen { 0%{box-shadow:0 2px 12px rgba(44,37,32,0.07),-6px 0 16px rgba(107,127,92,0.4)} 60%{box-shadow:0 2px 12px rgba(44,37,32,0.07),-2px 0 6px rgba(107,127,92,0.1)} 100%{box-shadow:0 2px 12px rgba(44,37,32,0.07),0 1px 3px rgba(44,37,32,0.04);border-left-color:transparent} }
+
+  /* Stat pills — pop avec rebond */
+  .stat-pill-enter {
+    opacity: 0;
+    transform: scale(0.7);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34,1.6,0.64,1);
+  }
+  .stat-pill-enter.in { opacity: 1; transform: scale(1); }
+
+  /* Chips contact — glissent de gauche un par un */
+  .chip-enter {
+    opacity: 0;
+    transform: translateX(-14px);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  }
+  .chip-enter.in { opacity: 1; transform: translateX(0); }
+  .spider-canvas {
+    position: fixed; inset: 0; pointer-events: none; z-index: 2; opacity: 0.09;
+  }
+  .body-grid { display: grid; grid-template-columns: 1fr 350px; gap: 24px; margin-bottom: 24px; }
+  .col-left  { display: flex; flex-direction: column; gap: 24px; }
+  .col-right { display: flex; flex-direction: column; gap: 24px; }
+
+  /* ── GLASS CARD ── */
+  .glass-card { 
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.8); border-radius: 20px; padding: 36px 40px;
+    box-shadow: 0 4px 24px rgba(44,37,32,0.05);
+  }
+
+  /* ── SECTION TITLE ── */
+  .sec-title {
+    font-family: var(--font); font-size: 13px; font-weight: 600;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 24px; display: flex; align-items: center; gap: 12px;
+  }
+  .sec-title .dot-color { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .sec-title::after { content:''; flex:1; height:1px; background:rgba(44,37,32,0.08); }
+
+  /* exp-item marker — vert sauge */
+  .exp-item .form-marker {
+    background: linear-gradient(135deg, var(--sage) 0%, #B0C8A8 100%);
+    box-shadow: 0 2px 8px rgba(107,127,92,0.2);
+  }
+  .exp-item:hover .form-marker {
+    box-shadow: 0 4px 14px rgba(107,127,92,0.35);
+  }
+  .exp-item .form-marker svg path, .exp-item .form-marker svg rect, .exp-item .form-marker svg circle {
+    fill: var(--accent2);
+  }
+
+  .form-name { font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--warm); margin-bottom: 2px; }
+  .form-school { font-family: var(--font); font-size: 11px; color: var(--mid); font-weight: 400; }
+  .form-date { font-family: var(--font); font-size: 10px; color: var(--accent1); font-weight: 500; margin-top: 4px; letter-spacing: 0.5px; }
+  .form-desc { font-family: var(--font); font-size: 12px; line-height: 1.65; color: var(--mid); margin-top: 6px; font-weight: 300; }
+
+  .exp-year { font-family: var(--font); font-size: 10px; color: var(--accent1); font-weight: 500; letter-spacing: 0.5px; line-height: 1.6; padding-top: 3px; }
+  .exp-role { font-family: var(--font); font-size: 15px; font-weight: 600; color: var(--warm); margin-bottom: 3px; }
+  .exp-org { font-family: var(--font); font-size: 11px; color: var(--accent2); letter-spacing: 1px; text-transform: uppercase; font-weight: 500; margin-bottom: 8px; }
+  .exp-desc { font-family: var(--font); font-size: 13px; line-height: 1.75; color: var(--mid); font-weight: 300; }
+  .exp-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+  /* ── AVATAR ANIMÉ ── */
+  .avatar-wrap {
+    position: relative;
+    width: 130px; height: 130px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 8px;
+  }
+
+  /* Cercles qui pulsent */
+  .avatar-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1.5px solid rgba(201,104,90,0.25);
+    animation: ringPulse 3s ease-in-out infinite;
+  }
+  .ring-1 { width: 130px; height: 130px; animation-delay: 0s; }
+  .ring-2 { width: 108px; height: 108px; animation-delay: 0.6s; border-color: rgba(123,110,168,0.2); }
+  .ring-3 { width: 86px;  height: 86px;  animation-delay: 1.2s; border-color: rgba(107,127,92,0.2); }
+
+  @keyframes ringPulse {
+    0%, 100% { transform: scale(1);    opacity: 0.5; }
+    50%       { transform: scale(1.06); opacity: 1; }
+  }
+
+  /* Coeur de l'avatar */
+  .avatar-core {
+    width: 70px; height: 70px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--blush) 0%, var(--lavender) 100%);
+    box-shadow: 0 8px 24px rgba(201,104,90,0.2);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative; z-index: 2;
+    animation: avatarFloat 4s ease-in-out infinite;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .avatar-core:hover {
+    transform: scale(1.06) translateY(-3px);
+    box-shadow: 0 14px 32px rgba(201,104,90,0.3);
+  }
+
+  @keyframes avatarFloat {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-5px); }
+  }
+
+  .avatar-initials {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 600;
+    color: var(--accent1); line-height: 1;
+  }
+  .avatar-title {
+    font-family: var(--font);
+    font-size: 7px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--mid); margin-top: 4px; text-align: center;
+    line-height: 1.3;
+  }
+
+  /* hero-right */
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 16px; }
+
+  /* ── SKILLS ── */
+  /* ── COMPÉTENCES — animations ── */
+  .skill-row {
+    margin-bottom: 20px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .skill-row:hover { background: rgba(255,255,255,0.6); }
+
+  .skill-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; }
+
+  .skill-name {
+    font-family: var(--font); font-size: 12px; font-weight: 500; color: var(--warm);
+    transition: color 0.3s, letter-spacing 0.3s;
+  }
+  .skill-row:hover .skill-name { color: var(--accent1); letter-spacing: 0.3px; }
+
+  /* Étoiles — pop une par une au hover */
+  .skill-stars { display: flex; gap: 5px; }
+  .star {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--blush); border: 1.5px solid var(--accent1);
+    transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+  }
+  .star.filled { background: var(--accent1); }
+
+  .skill-row:hover .star {
+    animation: starPop 0.4s cubic-bezier(0.34,1.7,0.64,1) forwards;
+  }
+  .skill-row:hover .star:nth-child(1) { animation-delay: 0.00s; }
+  .skill-row:hover .star:nth-child(2) { animation-delay: 0.05s; }
+  .skill-row:hover .star:nth-child(3) { animation-delay: 0.10s; }
+  .skill-row:hover .star:nth-child(4) { animation-delay: 0.15s; }
+  .skill-row:hover .star:nth-child(5) { animation-delay: 0.20s; }
+
+  @keyframes starPop {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.6); box-shadow: 0 0 6px rgba(201,104,90,0.5); }
+    100% { transform: scale(1); }
+  }
+
+  /* Barre de compétence — shimmer au hover */
+  .skill-bar2 {
+    height: 4px; background: rgba(44,37,32,0.06);
+    border-radius: 100px; overflow: hidden;
+    position: relative;
+  }
+  .skill-fill2 {
+    height: 100%; border-radius: 100px; width: 0;
+    transition: width 1.4s cubic-bezier(0.34,1.56,0.64,1);
+    position: relative; overflow: hidden;
+  }
+  /* Shimmer qui glisse sur la barre */
+  .skill-fill2::after {
+    content: '';
+    position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    animation: barShimmer 2.5s ease-in-out infinite;
+    animation-delay: var(--bar-delay, 0s);
+  }
+  @keyframes barShimmer {
+    0%   { left: -60%; opacity: 0; }
+    20%  { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { left: 120%; opacity: 0; }
+  }
+  .skill-fill2.fill-coral { background: linear-gradient(to right, #F0A899, var(--accent1)); }
+  .skill-fill2.fill-sage  { background: linear-gradient(to right, #A8C09A, var(--accent2)); }
+  .skill-fill2.fill-lav   { background: linear-gradient(to right, #B8B0D8, var(--accent3)); }
+
+  /* Entrée des skill-rows — glissement depuis droite */
+  .skill-row.skill-visible {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+  }
+
+  .tool-group-label {
+    font-family: var(--font); font-size: 10px; font-weight: 600;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--mid); opacity: 0.6;
+    margin-bottom: 10px; margin-top: 4px;
+  }
+
+  /* ── TOOLS ── */
+  .tools-wrap { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  /* ── SOFT SKILLS ── */
+  .soft-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  /* ── FOOTER ── */
+  .bottom-band {
+    background: white;
+    border-radius: 20px; padding: 20px 44px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+    border: 1px solid rgba(44,37,32,0.06);
+    opacity: 0; animation: cardIn 0.8s 0.6s ease forwards;
+    position: sticky; bottom: 16px; z-index: 100;
+    box-shadow: 0 4px 24px rgba(44,37,32,0.06);
+  }
+
+  .band-left { font-family: var(--font); font-size: 16px; font-weight: 600; color: var(--warm); font-style: normal; position: relative; z-index: 1; transition: color 0.5s; }
+  .band-left span { color: #1A1410; font-style: normal; font-weight: 700; }
+  .bottom-band:hover .band-left span { color: #1A1410; }
+  .band-center { display: flex; gap: 20px; flex-wrap: wrap; position: relative; z-index: 1; }
+  .band-item { font-family: var(--font); font-size: 12px; color: var(--mid); letter-spacing: 0.5px; transition: color 0.5s; position: relative; z-index: 1; }
+  .band-avail {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.5); border: 1px solid rgba(44,37,32,0.15);
+    border-radius: 100px; padding: 9px 20px; font-family: var(--font); font-size: 12px;
+    color: var(--warm); letter-spacing: 0.5px; transition: all 0.5s; position: relative; z-index: 1;
+  }
+  .avail-light { width: 8px; height: 8px; background: #7CFC00; border-radius: 50%; animation: glow 2s ease-in-out infinite; }
+  @keyframes glow { 0%,100%{box-shadow:0 0 0 0 rgba(124,252,0,0)} 50%{box-shadow:0 0 8px rgba(124,252,0,0.6)} }
+
+  /* ══════════════════════════
+     RESPONSIVE
+  ══════════════════════════ */
+  @media (max-width: 860px) {
+    .page { padding: 24px 18px; }
+
+    .hero-card {
+      grid-template-columns: 1fr;
+      padding: 36px 28px;
+      gap: 28px;
+    }
+    .hero-right {
+      flex-direction: row; flex-wrap: wrap;
+      align-items: flex-start; justify-content: flex-start; gap: 12px;
+    }
+    .stat-pill { min-width: 90px; padding: 12px 16px; }
+    .stat-n { font-size: 28px; }
+
+    .body-grid { grid-template-columns: 1fr; }
+    /* Sur tablette/mobile : compétences/outils en premier, puis formations, puis expériences */
+    .col-right { order: -1; }
+
+    .glass-card { padding: 28px 22px; }
+    .exp-item { grid-template-columns: 76px 1fr; gap: 12px; }
+  }
+
+  @media (max-width: 520px) {
+    .hero-card { padding: 26px 18px; }
+    .hero-person-name { font-size: 30px; }
+    .hero-title-line { font-size: 32px; }
+    .hero-bio { font-size: 13px; }
+    .chip { padding: 6px 11px; font-size: 11px; }
+    .contact-row { gap: 7px; }
+
+    .exp-item { grid-template-columns: 68px 1fr; gap: 10px; }
+    .exp-year { font-size: 10px; }
+    .exp-role { font-size: 16px; }
+
+    .bottom-band { padding: 20px 20px; flex-direction: column; align-items: flex-start; }
+    .band-center { flex-direction: column; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas class="spider-canvas" id="spiderCanvas"></canvas>
+
+<div class="bg-blobs">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<div class="page">
+
+  <!-- ── HERO ── -->
+  <div class="hero-card" id="hero" style="position:relative; overflow:hidden;">
+
+    <!-- Particules flottantes -->
+    <div class="hero-particle" style="width:80px;height:80px;background:var(--blush);top:-20px;right:60px;--dur:7s;--del:0s;--tx:20px;--ty:-10px;--ty2:15px;--op:0.25;filter:blur(20px);"></div>
+    <div class="hero-particle" style="width:50px;height:50px;background:var(--lavender);top:40%;right:20px;--dur:9s;--del:1.5s;--tx:-12px;--ty:-20px;--ty2:10px;--op:0.3;filter:blur(14px);"></div>
+    <div class="hero-particle" style="width:30px;height:30px;background:var(--sage);bottom:20px;right:140px;--dur:6s;--del:0.8s;--tx:15px;--ty:-8px;--ty2:12px;--op:0.35;filter:blur(10px);"></div>
+    <div class="hero-particle" style="width:14px;height:14px;background:var(--accent1);top:30px;right:200px;--dur:5s;--del:2s;--tx:-8px;--ty:-12px;--ty2:6px;--op:0.2;border-radius:50%;"></div>
+    <div class="hero-particle" style="width:8px;height:8px;background:var(--accent3);bottom:40px;left:30%;--dur:8s;--del:0.3s;--tx:10px;--ty:-10px;--ty2:5px;--op:0.25;border-radius:50%;"></div>
+    <div class="hero-left">
+      <div class="pre-label">
+        <div class="pre-dot"></div>
+        <span class="pre-text">Product Manager · Digital</span>
+      </div>
+
+      <div class="hero-person-name">Fatima Charef</div>
+
+      <div class="hero-subtitle">Analyse Utilisateur · UX · Digital</div>
+      <p class="hero-bio">Diplômée en Product Management, j'ai acquis en un an les compétences clés du métier, analyse des besoins utilisateurs, définition de la stratégie produit, gestion du cycle de vie et animation d'équipes en méthode Agile. Au cours de ma formation, j'ai mené 12 projets en autonomie, de la phase de discovery jusqu'à la livraison finale, en utilisant des outils comme Figma, Notion, Miro et Airtable. Rigoureuse, curieuse et orientée impact, je suis prête à mettre ces compétences au service d'une équipe produit ambitieuse.</p>
+
+      <div class="contact-row">
+        <div class="chip chip-phone" onclick="window.location.href='tel:+33662147422'">
+          <span class="chip-icon chip-ring">☎</span>
+          <span class="chip-text"> 06 62 14 74 22</span>
+        </div>
+        <div class="chip chip-location">
+          <span class="chip-icon">📍</span>
+          <span class="chip-text"> Île-de-France</span>
+        </div>
+        <a class="chip chip-portfolio" href="https://f-charef-projet.com/" target="_blank">
+          <span class="chip-icon">🌐</span>
+          <span class="chip-text"> f-charef-projet.com</span>
+        </a>
+        <a class="chip chip-linkedin" href="https://www.linkedin.com/in/fatima-charef/" target="_blank">
+          <span class="chip-icon chip-in">in</span>
+          <span class="chip-text"> linkedin.com/in/fatima-charef</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+
+      <div class="stat-pill">
+        <span class="stat-n">12</span>
+        <span class="stat-l">Projets</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-n">B2</span>
+        <span class="stat-l">Anglais</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BODY ── -->
+  <div class="body-grid">
+
+    <!-- LEFT : Formations → Expériences -->
+    <div class="col-left">
+
+      <!-- FORMATIONS -->
+      <div class="glass-card">
+        <div class="sec-title">
+          <div class="dot-color" style="background:var(--accent1)"></div>
+          Formations
+        </div>
+        <div class="form-item">
+          <div class="form-marker"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L22 8.5L12 14L2 8.5L12 3Z" fill="#C9685A" opacity="0.9"/><path d="M6 11V17C6 17 8.5 19.5 12 19.5C15.5 19.5 18 17 18 17V11" stroke="#C9685A" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></div>
+          <div>
+            <div class="form-name">Product Manager</div>
+            <div class="form-school">Openclassrooms, Paris</div>
+            <div class="form-date">04-2024 → 08-2025</div>
+            <div class="form-desc">Analyse du marché des besoins clients, définition de la stratégie et la gestion du cycle de vie produit.</div>
+            <div class="exp-pills"><span class="exp-pill">Roadmap</span><span class="exp-pill">Agile / Scrum</span><span class="exp-pill">User Research</span></div>
+          </div>
+        </div>
+        <div class="form-item">
+          <div class="form-marker"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L22 8.5L12 14L2 8.5L12 3Z" fill="#C9685A" opacity="0.9"/><path d="M6 11V17C6 17 8.5 19.5 12 19.5C15.5 19.5 18 17 18 17V11" stroke="#C9685A" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></div>
+          <div>
+            <div class="form-name">Community Manager</div>
+            <div class="form-school">Doranco École Sup, Paris</div>
+            <div class="form-date">12-2022 → 08-2023</div>
+            <div class="form-desc">Création diffusion de contenus digitaux, analyse des KPIs et optimisation de la stratégie digitale.</div>
+            <div class="exp-pills"><span class="exp-pill">KPIs</span><span class="exp-pill">Contenu</span><span class="exp-pill">Analytics</span></div>
+          </div>
+        </div>
+        <div class="form-item">
+          <div class="form-marker"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L22 8.5L12 14L2 8.5L12 3Z" fill="#C9685A" opacity="0.9"/><path d="M6 11V17C6 17 8.5 19.5 12 19.5C15.5 19.5 18 17 18 17V11" stroke="#C9685A" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></div>
+          <div>
+            <div class="form-name">Développement Web</div>
+            <div class="form-school">Openclassrooms, Paris</div>
+            <div class="form-date">12-2021 → 06-2022</div>
+            <div class="form-desc">Développement d'interfaces web responsives et intégration de maquettes UI/UX.</div>
+            <div class="exp-pills"><span class="exp-pill">UI/UX</span><span class="exp-pill">HTML/CSS</span><span class="exp-pill">Responsive</span></div>
+          </div>
+        </div>
+        <div class="form-item">
+          <div class="form-marker"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L22 8.5L12 14L2 8.5L12 3Z" fill="#C9685A" opacity="0.9"/><path d="M6 11V17C6 17 8.5 19.5 12 19.5C15.5 19.5 18 17 18 17V11" stroke="#C9685A" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></div>
+          <div>
+            <div class="form-name">Licence 2 Histoire de l'Art</div>
+            <div class="form-school">Université Paris-Nanterre</div>
+            <div class="form-date">09-2019 → 06-2021</div>
+            <div class="form-desc">Analyse des œuvres, sens du détail et culture visuelle — des atouts précieux pour concevoir des interfaces esthétiques et pensées pour l'utilisateur.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPÉRIENCES -->
+      <div class="glass-card">
+        <div class="sec-title">
+          <div class="dot-color" style="background:var(--accent1)"></div>
+          Expériences professionnelles
+        </div>
+
+        <div class="form-item">
+          <div class="form-marker"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="9" width="18" height="11" rx="2" stroke="#6B7F5C" stroke-width="1.5" fill="none"/><path d="M8 9V7C8 5.9 8.9 5 10 5H14C15.1 5 16 5.9 16 7V9" stroke="#6B7F5C" stroke-width="1.5" stroke-linecap="round" fill="none"/><line x1="3" y1="14" x2="21" y2="14" stroke="#6B7F5C" stroke-width="1.5" opacity="0.4"/></svg></div>
+          <div>
+            <div class="form-name">Assistante Pédagogique</div>
+            <div class="form-school">Collège Jean Zay · Bondy</div>
+            <div class="form-date">09-2023 → 03-2024</div>
+            <div class="form-desc">Collaboration avec les équipes pédagogiques, analyse des besoins individuels et suivi personnalisé.</div>
+          </div>
+        </div>
+
+        <div class="form-item">
+          <div class="form-marker"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="9" width="18" height="11" rx="2" stroke="#6B7F5C" stroke-width="1.5" fill="none"/><path d="M8 9V7C8 5.9 8.9 5 10 5H14C15.1 5 16 5.9 16 7V9" stroke="#6B7F5C" stroke-width="1.5" stroke-linecap="round" fill="none"/><line x1="3" y1="14" x2="21" y2="14" stroke="#6B7F5C" stroke-width="1.5" opacity="0.4"/></svg></div>
+          <div>
+            <div class="form-name">Assistante Pédagogique</div>
+            <div class="form-school">Collège Paul Painlevé · Sevran</div>
+            <div class="form-date">06-2016 → 08-2021</div>
+            <div class="form-desc">Accompagnement personnalisé d'élèves en difficulté, médiation et gestion des conflits.</div>
+          </div>
+        </div>
+
+        <div class="form-item">
+          <div class="form-marker"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="9" width="18" height="11" rx="2" stroke="#6B7F5C" stroke-width="1.5" fill="none"/><path d="M8 9V7C8 5.9 8.9 5 10 5H14C15.1 5 16 5.9 16 7V9" stroke="#6B7F5C" stroke-width="1.5" stroke-linecap="round" fill="none"/><line x1="3" y1="14" x2="21" y2="14" stroke="#6B7F5C" stroke-width="1.5" opacity="0.4"/></svg></div>
+          <div>
+            <div class="form-name">Congé parental d'éducation</div>
+            <div class="form-school">Gestion de projet familial</div>
+            <div class="form-date">06-2010 → 10-2014</div>
+            <div class="form-desc">Gestion des plannings, conduite de projet et budget annuel.</div>
+          </div>
+        </div>
+
+        <div class="form-item">
+          <div class="form-marker"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="9" width="18" height="11" rx="2" stroke="#6B7F5C" stroke-width="1.5" fill="none"/><path d="M8 9V7C8 5.9 8.9 5 10 5H14C15.1 5 16 5.9 16 7V9" stroke="#6B7F5C" stroke-width="1.5" stroke-linecap="round" fill="none"/><line x1="3" y1="14" x2="21" y2="14" stroke="#6B7F5C" stroke-width="1.5" opacity="0.4"/></svg></div>
+          <div>
+            <div class="form-name">Assistante Scolaire</div>
+            <div class="form-school">Aristide Briand · Villeparisis</div>
+            <div class="form-date">09-2009 → 08-2010</div>
+            <div class="form-desc">Favoriser l'autonomie des élèves en situation de handicap.</div>
+          </div>
+        </div>
+
+        <div class="form-item">
+          <div class="form-marker"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="9" width="18" height="11" rx="2" stroke="#6B7F5C" stroke-width="1.5" fill="none"/><path d="M8 9V7C8 5.9 8.9 5 10 5H14C15.1 5 16 5.9 16 7V9" stroke="#6B7F5C" stroke-width="1.5" stroke-linecap="round" fill="none"/><line x1="3" y1="14" x2="21" y2="14" stroke="#6B7F5C" stroke-width="1.5" opacity="0.4"/></svg></div>
+          <div>
+            <div class="form-name">Congé parental d'éducation</div>
+            <div class="form-school">Gestion familiale</div>
+            <div class="form-date">01-2002 → 08-2009</div>
+            <div class="form-desc">Assurer la cohésion et la gestion familiale.</div>
+          </div>
+        </div>
+
+        <div class="form-item">
+          <div class="form-marker"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="9" width="18" height="11" rx="2" stroke="#6B7F5C" stroke-width="1.5" fill="none"/><path d="M8 9V7C8 5.9 8.9 5 10 5H14C15.1 5 16 5.9 16 7V9" stroke="#6B7F5C" stroke-width="1.5" stroke-linecap="round" fill="none"/><line x1="3" y1="14" x2="21" y2="14" stroke="#6B7F5C" stroke-width="1.5" opacity="0.4"/></svg></div>
+          <div>
+            <div class="form-name">Agent Commercial</div>
+            <div class="form-school">Aéroport de Paris · CDG</div>
+            <div class="form-date">06-2000 → 07-2001</div>
+            <div class="form-desc">Mise à jour des informations clients et amélioration de la fluidité du trafic dans un environnement international exigeant.</div>
+          </div>
+        </div>
+
+        <div class="form-item">
+          <div class="form-marker"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="9" width="18" height="11" rx="2" stroke="#6B7F5C" stroke-width="1.5" fill="none"/><path d="M8 9V7C8 5.9 8.9 5 10 5H14C15.1 5 16 5.9 16 7V9" stroke="#6B7F5C" stroke-width="1.5" stroke-linecap="round" fill="none"/><line x1="3" y1="14" x2="21" y2="14" stroke="#6B7F5C" stroke-width="1.5" opacity="0.4"/></svg></div>
+          <div>
+            <div class="form-name">Assistante Manager</div>
+            <div class="form-school">Claire's Accessories · Londres</div>
+            <div class="form-date">01-1997 → 12-1999</div>
+            <div class="form-desc">Gestion des stocks et management d'une équipe de collaborateurs au Royaume-Uni.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="col-right">
+
+      <!-- COMPÉTENCES -->
+      <div class="glass-card">
+        <div class="sec-title">
+          <div class="dot-color" style="background:var(--accent2)"></div>
+          Compétences
+        </div>
+        <div class="skill-row">
+          <div class="skill-top"><span class="skill-name">Analyse utilisateur</span><div class="skill-stars"><div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star filled"></div></div></div>
+          <div class="skill-bar2"><div class="skill-fill2 fill-coral" data-w="95%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-top"><span class="skill-name">UX / Design Thinking</span><div class="skill-stars"><div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star"></div></div></div>
+          <div class="skill-bar2"><div class="skill-fill2 fill-sage" data-w="88%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-top"><span class="skill-name">Gestion de projet</span><div class="skill-stars"><div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star"></div></div></div>
+          <div class="skill-bar2"><div class="skill-fill2 fill-sage" data-w="85%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-top"><span class="skill-name">Data et Analyse</span><div class="skill-stars"><div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star"></div></div></div>
+          <div class="skill-bar2"><div class="skill-fill2 fill-lav" data-w="80%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-top"><span class="skill-name">Intelligence émotionnelle</span><div class="skill-stars"><div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star filled"></div><div class="star filled"></div></div></div>
+          <div class="skill-bar2"><div class="skill-fill2 fill-lav" data-w="96%"></div></div>
+        </div>
+      </div>
+
+      <!-- OUTILS -->
+      <div class="glass-card">
+        <div class="sec-title">
+          <div class="dot-color" style="background:var(--accent3)"></div>
+          Outils maîtrisés
+        </div>
+
+        <!-- Groupe Design & Produit -->
+        <div class="tool-group-label">Design et Produit</div>
+        <div class="tools-wrap" style="margin-bottom:18px;">
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 28.5C19 21.596 24.596 16 31.5 16S44 21.596 44 28.5 38.404 41 31.5 41 19 35.404 19 28.5z" fill="#FF7262"/><path d="M6.5 41C13.404 41 19 35.404 19 28.5V16H6.5C-0.404 16-6 21.596-6 28.5S-0.404 41 6.5 41z" fill="#F24E1E"/><path d="M19 3.5C19-3.404 13.404-9 6.5-9S-6-3.404-6 3.5 -0.404 16 6.5 16H19V3.5z" fill="#FF7262"/><path d="M31.5-9C24.596-9 19-3.404 19 3.5V16h12.5C38.404 16 44 10.404 44 3.5S38.404-9 31.5-9z" fill="#A259FF"/><path d="M19 16v12.5L31.5 16H19z" fill="#1ABCFE"/></svg>
+            Figma<span class="tooltip">Conception de maquettes et prototypes UI/UX</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#FF8C42"/><text x="50" y="68" text-anchor="middle" font-size="52" font-weight="900" fill="white" font-family="sans-serif">M</text></svg>
+            Miro<span class="tooltip">Tableaux blancs collaboratifs et brainstorming</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#00C4CC"/><text x="50" y="70" text-anchor="middle" font-size="52" font-weight="900" fill="white" font-family="sans-serif">C</text></svg>
+            Canva<span class="tooltip">Création de visuels et supports de communication</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#FF0000"/><text x="50" y="70" text-anchor="middle" font-size="52" font-weight="900" fill="white" font-family="sans-serif">Ps</text></svg>
+            Suite Adobe<span class="tooltip">Retouche photo, illustration et montage vidéo</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#1a1a1a"/><text x="50" y="70" text-anchor="middle" font-size="60" fill="white" font-family="sans-serif">N</text></svg>
+            Notion<span class="tooltip">Organisation, documentation et gestion de projets</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#FCB400"/><text x="50" y="70" text-anchor="middle" font-size="58" font-weight="900" fill="white" font-family="sans-serif">A</text></svg>
+            Airtable<span class="tooltip">Base de données et gestion de contenu produit</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#6B9E78"/><text x="50" y="68" text-anchor="middle" font-size="34" font-weight="700" fill="white" font-family="sans-serif">AG</text></svg>
+            Agile / Scrum<span class="tooltip">Méthode de gestion de projet en cycles itératifs</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#21759B"/><text x="50" y="70" text-anchor="middle" font-size="58" font-weight="900" fill="white" font-family="sans-serif">W</text></svg>
+            WordPress<span class="tooltip">Création et gestion de sites web</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#1a1a1a"/><text x="50" y="68" text-anchor="middle" font-size="30" font-weight="900" fill="white" font-family="sans-serif">Cap</text></svg>
+            CapCut<span class="tooltip">Montage et édition de vidéos courtes</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#4A154B"/><text x="50" y="68" text-anchor="middle" font-size="36" font-weight="900" fill="white" font-family="sans-serif">S</text></svg>
+            Slack<span class="tooltip">Messagerie et collaboration d'équipe en temps réel</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#625DF5"/><text x="50" y="68" text-anchor="middle" font-size="36" font-weight="900" fill="white" font-family="sans-serif">L</text></svg>
+            Loom<span class="tooltip">Enregistrement de vidéos asynchrones pour l'équipe</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#1a1a1a"/><text x="50" y="68" text-anchor="middle" font-size="32" font-weight="900" fill="white" font-family="sans-serif">Tally</text></svg>
+            Tally<span class="tooltip">Création de formulaires et sondages simples</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#D4785A"/><text x="50" y="68" text-anchor="middle" font-size="42" font-weight="700" fill="white" font-family="sans-serif">AI</text></svg>
+            Claude IA<span class="tooltip">Assistant IA pour analyse, rédaction et stratégie produit</span><span class="sparkles"></span>
+          </div>
+        </div>
+
+        <!-- Groupe Microsoft 365 -->
+        <div class="tool-group-label">Microsoft 365</div>
+        <div class="tools-wrap" style="margin-bottom:18px;">
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#2B579A"/><text x="50" y="70" text-anchor="middle" font-size="52" font-weight="900" fill="white" font-family="sans-serif">W</text></svg>
+            Word<span class="tooltip">Rédaction de documents et rapports professionnels</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#217346"/><text x="50" y="70" text-anchor="middle" font-size="52" font-weight="900" fill="white" font-family="sans-serif">X</text></svg>
+            Excel<span class="tooltip">Tableaux de bord, analyses de données et KPIs</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#D24726"/><text x="50" y="70" text-anchor="middle" font-size="52" font-weight="900" fill="white" font-family="sans-serif">P</text></svg>
+            PowerPoint<span class="tooltip">Création de présentations et supports visuels</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#6264A7"/><text x="50" y="68" text-anchor="middle" font-size="52" font-weight="900" fill="white" font-family="sans-serif">T</text></svg>
+            Teams<span class="tooltip">Communication et collaboration en équipe</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#0078D4"/><text x="50" y="68" text-anchor="middle" font-size="48" font-weight="900" fill="white" font-family="sans-serif">O</text></svg>
+            Outlook<span class="tooltip">Gestion des emails et planning professionnel</span><span class="sparkles"></span>
+          </div>
+        </div>
+
+        <!-- Groupe Google Workspace -->
+        <div class="tool-group-label">Google Workspace</div>
+        <div class="tools-wrap">
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#4285F4"/><text x="50" y="68" text-anchor="middle" font-size="36" font-weight="900" fill="white" font-family="sans-serif">Docs</text></svg>
+            Google Docs<span class="tooltip">Rédaction collaborative de documents en ligne</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#0F9D58"/><text x="50" y="68" text-anchor="middle" font-size="28" font-weight="900" fill="white" font-family="sans-serif">Sheet</text></svg>
+            Google Sheets<span class="tooltip">Tableurs en ligne et suivi de données partagé</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#F4B400"/><text x="50" y="68" text-anchor="middle" font-size="28" font-weight="900" fill="white" font-family="sans-serif">Slide</text></svg>
+            Google Slides<span class="tooltip">Présentations collaboratives en ligne</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#1A73E8"/><text x="50" y="68" text-anchor="middle" font-size="36" font-weight="900" fill="white" font-family="sans-serif">Drive</text></svg>
+            Google Drive<span class="tooltip">Stockage et partage de fichiers dans le cloud</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#00897B"/><text x="50" y="68" text-anchor="middle" font-size="36" font-weight="900" fill="white" font-family="sans-serif">Meet</text></svg>
+            Google Meet<span class="tooltip">Visioconférences et réunions à distance</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#E37400"/><text x="50" y="68" text-anchor="middle" font-size="36" font-weight="900" fill="white" font-family="sans-serif">GA</text></svg>
+            Google Analytics<span class="tooltip">Analyse du trafic et comportement utilisateurs</span><span class="sparkles"></span>
+          </div>
+          <div class="tool-tag magic-btn">
+            <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="18" fill="#DB4437"/><text x="50" y="68" text-anchor="middle" font-size="32" font-weight="900" fill="white" font-family="sans-serif">Gmail</text></svg>
+            Gmail<span class="tooltip">Messagerie professionnelle Google</span><span class="sparkles"></span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SOFT SKILLS -->
+      <div class="glass-card">
+        <div class="sec-title">
+          <div class="dot-color" style="background:var(--accent2)"></div>
+          Soft Skills
+        </div>
+        <div class="soft-cloud">
+          <div class="soft-word" data-emoji="🎨">Créativité</div>
+          <div class="soft-word" data-emoji="🔍">Esprit d'analyse</div>
+          <div class="soft-word" data-emoji="🌟">Leadership</div>
+          <div class="soft-word" data-emoji="🚀">Initiative</div>
+          <div class="soft-word" data-emoji="💬">Communication</div>
+          <div class="soft-word" data-emoji="🌿">Adaptabilité</div>
+          <div class="soft-word" data-emoji="🎭">Histoire et Culture</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="bottom-band">
+    <div class="band-left"><span>Fatima Charef</span> &nbsp; Product Manager</div>
+    <div class="band-center">
+      <span class="band-item">🌐 f-charef-projet.com</span>
+      <span class="band-item">☎ 06 62 14 74 22</span>
+    </div>
+    <div class="band-avail">
+      <div class="avail-light"></div>
+      Disponible
+    </div>
+  </div>
+
+</div>
+
+<!-- Bouton retour en haut -->
+<button class="back-to-top" id="backTop" onclick="document.getElementById('hero').scrollIntoView({behavior:'smooth'})">↑</button>
+
+<script>
+  // ── BACK TO TOP ──
+  const backTop = document.getElementById('backTop');
+  window.addEventListener('scroll', () => {
+    backTop.classList.toggle('visible', window.scrollY > 400);
+  });
+
+  // ── COMPTEUR ANIMÉ stats ──
+  function animateCount(el, to, dur) {
+    let cur = 0; const step = to / (dur / 16);
+    const t = setInterval(() => {
+      cur = Math.min(cur + step, to);
+      el.textContent = Math.floor(cur);
+      if (cur >= to) clearInterval(t);
+    }, 16);
+  }
+  const cntObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const v = parseInt(e.target.textContent);
+        if (!isNaN(v)) animateCount(e.target, v, 1000);
+        cntObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.stat-n').forEach(el => cntObs.observe(el));
+
+  // ── SKILL ROWS animation ──
+  document.querySelectorAll('.skill-row').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateX(14px)';
+    el.style.transition = `opacity 0.4s ${i*0.08}s ease, transform 0.4s ${i*0.08}s cubic-bezier(0.22,1,0.36,1), background 0.3s`;
+    el.querySelectorAll('.skill-fill2').forEach(bar => {
+      bar.style.setProperty('--bar-delay', (i * 0.3) + 's');
+    });
+  });
+
+  const skillObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.skill-row').forEach((row, i) => {
+          setTimeout(() => {
+            row.style.opacity = '1';
+            row.style.transform = 'translateX(0)';
+            row.querySelectorAll('.skill-fill2').forEach(fill => {
+              fill.style.width = fill.dataset.w;
+            });
+          }, i * 80);
+        });
+        skillObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.glass-card').forEach(card => {
+    if (card.querySelector('.skill-row')) skillObs.observe(card);
+  });
+
+  // ── SCROLL REVEAL ──
+  function observe(els, cb) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { cb(e.target); io.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+    els.forEach(el => io.observe(el));
+  }
+
+  document.querySelectorAll('.col-left .glass-card').forEach((el, i) => {
+    el.classList.add('reveal-left');
+    el.style.transitionDelay = (i * 0.12) + 's';
+  });
+  document.querySelectorAll('.col-right .glass-card').forEach((el, i) => {
+    el.classList.add('reveal-right');
+    el.style.transitionDelay = (i * 0.12) + 's';
+  });
+  observe(document.querySelectorAll('.reveal-left, .reveal-right'), el => el.classList.add('in'));
+
+  document.querySelectorAll('.sec-title').forEach(el => el.classList.add('reveal'));
+  observe(document.querySelectorAll('.sec-title'), el => el.classList.add('in'));
+
+  document.querySelectorAll('.exp-item, .form-item').forEach(el => el.classList.add('reveal-child'));
+  document.querySelectorAll('.glass-card').forEach(card => {
+    card.querySelectorAll('.reveal-child').forEach((el, i) => {
+      el.style.transitionDelay = (0.05 + i * 0.09) + 's';
+      el.style.setProperty('--pulse-delay', (0.05 + i * 0.09 + 0.2) + 's');
+    });
+  });
+  observe(document.querySelectorAll('.reveal-child'), el => el.classList.add('in'));
+
+  document.querySelectorAll('.stat-pill').forEach((el, i) => {
+    el.classList.add('stat-pill-enter');
+    el.style.transitionDelay = (0.5 + i * 0.12) + 's';
+  });
+  observe(document.querySelectorAll('.stat-pill-enter'), el => el.classList.add('in'));
+
+  document.querySelectorAll('.chip').forEach((el, i) => {
+    el.classList.add('chip-enter');
+    el.style.transitionDelay = (0.4 + i * 0.08) + 's';
+  });
+  observe(document.querySelectorAll('.chip-enter'), el => el.classList.add('in'));
+
+  observe(document.querySelectorAll('.glass-card'), el => {
+    el.querySelectorAll('.skill-fill2').forEach(fill => {
+      setTimeout(() => fill.style.width = fill.dataset.w, 400);
+    });
+  });
+
+  setTimeout(() => {
+    document.querySelectorAll('.reveal-left, .reveal-right, .reveal-child, .stat-pill-enter, .chip-enter, .sec-title').forEach(el => el.classList.add('in'));
+    document.querySelectorAll('.skill-row').forEach(el => { el.style.opacity = '1'; el.style.transform = 'translateX(0)'; });
+    document.querySelectorAll('.skill-fill2').forEach(f => f.style.width = f.dataset.w);
+  }, 900);
+
+  // ── SOFT SKILL EMOJI ──
+  document.querySelectorAll('.soft-word[data-emoji]').forEach(el => {
+    const span = document.createElement('span');
+    span.className = 'sw-emoji';
+    span.textContent = el.dataset.emoji;
+    el.prepend(span);
+  });
+
+  // ── TOOLTIP CLICK (mobile) ──
+  document.querySelectorAll('.tool-tag').forEach(tag => {
+    tag.addEventListener('click', () => {
+      const isOpen = tag.classList.contains('tooltip-open');
+      document.querySelectorAll('.tool-tag.tooltip-open').forEach(t => t.classList.remove('tooltip-open'));
+      if (!isOpen) tag.classList.add('tooltip-open');
+    });
+  });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.tool-tag')) {
+      document.querySelectorAll('.tool-tag.tooltip-open').forEach(t => t.classList.remove('tooltip-open'));
+    }
+  });
+
+  // ── MAGIC SPARKLES ──
+  const colors = ['#F2D5D5','#D5D0E8','#C8D5C0','#C9685A','#7B6EA8','#EDE3D5','#FAF7F2','#ffcba4'];
+  document.querySelectorAll('.magic-btn').forEach(btn => {
+    btn.addEventListener('mouseenter', e => {
+      const rect = btn.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      for (let i = 0; i < 10; i++) {
+        const p = document.createElement('div');
+        p.className = 'sparkle-particle';
+        const size = Math.random() * 7 + 4;
+        const angle = (Math.PI * 2 / 10) * i + (Math.random() - 0.5) * 0.8;
+        const dist = 28 + Math.random() * 30;
+        p.style.cssText = `width:${size}px;height:${size}px;left:${cx-size/2}px;top:${cy-size/2}px;background:${colors[Math.floor(Math.random()*colors.length)]};--sx:${Math.cos(angle)*dist}px;--sy:${Math.sin(angle)*dist}px;animation-delay:${Math.random()*0.15}s;`;
+        document.body.appendChild(p);
+        p.addEventListener('animationend', () => p.remove());
+      }
+    });
+  });
+
+  // ── SPIDER WEB CANVAS ──
+  const canvas = document.getElementById('spiderCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, mouse = { x: -999, y: -999 };
+  const NODES = 60, MAX_DIST = 160, nodes = [];
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  for (let i = 0; i < NODES; i++) {
+    nodes.push({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5, r: Math.random()*2+1 });
+  }
+  document.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+    nodes.forEach(n => {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x<0||n.x>W) n.vx*=-1;
+      if (n.y<0||n.y>H) n.vy*=-1;
+      const dx=mouse.x-n.x, dy=mouse.y-n.y, d=Math.sqrt(dx*dx+dy*dy);
+      if (d<200) { n.vx+=dx*0.00015; n.vy+=dy*0.00015; }
+      const s=Math.sqrt(n.vx*n.vx+n.vy*n.vy);
+      if (s>1.2) { n.vx=(n.vx/s)*1.2; n.vy=(n.vy/s)*1.2; }
+    });
+    for (let i=0;i<nodes.length;i++) {
+      for (let j=i+1;j<nodes.length;j++) {
+        const a=nodes[i],b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,dist=Math.sqrt(dx*dx+dy*dy);
+        if (dist<MAX_DIST) {
+          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle=`rgba(201,104,90,${(1-dist/MAX_DIST)*0.35})`; ctx.lineWidth=(1-dist/MAX_DIST)*0.8; ctx.stroke();
+        }
+      }
+      const dx=nodes[i].x-mouse.x,dy=nodes[i].y-mouse.y,dist=Math.sqrt(dx*dx+dy*dy);
+      if (dist<180) {
+        ctx.beginPath(); ctx.moveTo(nodes[i].x,nodes[i].y); ctx.lineTo(mouse.x,mouse.y);
+        ctx.strokeStyle=`rgba(123,110,168,${(1-dist/180)*0.5})`; ctx.lineWidth=(1-dist/180)*1.0; ctx.stroke();
+      }
+    }
+    nodes.forEach(n => {
+      const dx=n.x-mouse.x,dy=n.y-mouse.y,d=Math.sqrt(dx*dx+dy*dy),g=d<180;
+      ctx.beginPath(); ctx.arc(n.x,n.y,g?n.r*1.5:n.r,0,Math.PI*2);
+      ctx.fillStyle=g?'rgba(201,104,90,0.6)':'rgba(107,127,92,0.3)'; ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+</script>
+</body>
+</html>
