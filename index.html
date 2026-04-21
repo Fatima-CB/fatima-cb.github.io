@@ -1281,29 +1281,26 @@
 <button class="back-to-top" id="backTop" onclick="document.getElementById('hero').scrollIntoView({behavior:'smooth'})">↑</button>
 
 <script>
-  // ── MUSIQUE DE FOND ──
+  // ── MUSIQUE DE FOND — démarre au chargement ──
   const bgMusic = document.getElementById('bgMusic');
   const musicBtn = document.getElementById('musicBtn');
-  bgMusic.volume = 0.18; // Volume doux
+  bgMusic.volume = 0.18;
 
-  let musicStarted = false;
-
-  function startMusic() {
-    if (!musicStarted) {
-      bgMusic.play().then(() => {
-        musicStarted = true;
+  // Tente de démarrer automatiquement
+  const tryPlay = () => {
+    bgMusic.play().then(() => {
+      musicBtn.classList.add('playing');
+    }).catch(() => {
+      // Si bloqué par le navigateur, démarre au premier clic
+      document.addEventListener('click', () => {
+        bgMusic.play();
         musicBtn.classList.add('playing');
-        musicBtn.textContent = '🎵';
-      }).catch(() => {});
-    }
-  }
+      }, { once: true });
+    });
+  };
+  window.addEventListener('load', tryPlay);
 
-  // Démarre au premier clic ou interaction
-  document.addEventListener('click', startMusic, { once: true });
-  document.addEventListener('scroll', startMusic, { once: true });
-  document.addEventListener('mousemove', startMusic, { once: true });
-
-  // Bouton toggle musique
+  // Bouton toggle
   musicBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     if (bgMusic.paused) {
@@ -1316,91 +1313,6 @@
       musicBtn.textContent = '🔇';
     }
   });
-
-  // ── SONS — Web Audio API ──
-  const AudioCtx = window.AudioContext || window.webkitAudioContext;
-  let audioCtx;
-
-  function initAudio() {
-    if (!audioCtx) audioCtx = new AudioCtx();
-  }
-
-  function playTone(freq, type = 'sine', duration = 0.15, vol = 0.06) {
-    try {
-      initAudio();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.type = type;
-      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(freq * 0.8, audioCtx.currentTime + duration);
-      gain.gain.setValueAtTime(vol, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-      osc.start(audioCtx.currentTime);
-      osc.stop(audioCtx.currentTime + duration);
-    } catch(e) {}
-  }
-
-  function playChime(freqs, delay = 0.06) {
-    freqs.forEach((f, i) => setTimeout(() => playTone(f, 'sine', 0.2, 0.05), i * delay * 1000));
-  }
-
-  function playClick() { playTone(880, 'sine', 0.08, 0.07); }
-  function playHover() { playTone(440, 'sine', 0.06, 0.03); }
-  function playFormHover() { playChime([523, 659], 0.05); }
-  function playExpHover()  { playChime([392, 494], 0.05); }
-  function playSkillHover(){ playTone(660, 'triangle', 0.1, 0.04); }
-  function playSoftHover() { playChime([784, 988, 1175], 0.04); }
-  function playToolHover() { playTone(550, 'sine', 0.07, 0.04); }
-  function playCardEnter() { playChime([523, 659, 784], 0.07); }
-
-  // Formations — son doux au hover
-  document.querySelectorAll('.glass-card').forEach((card, i) => {
-    card.addEventListener('mouseenter', () => playCardEnter());
-  });
-
-  // Form items
-  document.querySelectorAll('.form-item').forEach(el => {
-    el.addEventListener('mouseenter', playFormHover);
-    el.addEventListener('click', playClick);
-  });
-
-  // Exp items
-  document.querySelectorAll('.exp-item').forEach(el => {
-    el.addEventListener('mouseenter', playExpHover);
-    el.addEventListener('click', playClick);
-  });
-
-  // Skill rows
-  document.querySelectorAll('.skill-row').forEach(el => {
-    el.addEventListener('mouseenter', playSkillHover);
-  });
-
-  // Soft skills
-  document.querySelectorAll('.soft-word').forEach(el => {
-    el.addEventListener('mouseenter', playSoftHover);
-    el.addEventListener('click', () => playChime([880, 1109, 1319], 0.05));
-  });
-
-  // Outils
-  document.querySelectorAll('.tool-tag').forEach(el => {
-    el.addEventListener('mouseenter', playToolHover);
-  });
-
-  // Chips contact
-  document.querySelectorAll('.chip').forEach(el => {
-    el.addEventListener('mouseenter', () => playTone(660, 'sine', 0.08, 0.04));
-    el.addEventListener('click', playClick);
-  });
-
-  // Stat pills
-  document.querySelectorAll('.stat-pill').forEach(el => {
-    el.addEventListener('mouseenter', () => playChime([528, 660], 0.06));
-  });
-
-  // Back to top
-  document.getElementById('backTop')?.addEventListener('click', () => playChime([523, 784, 1047], 0.08));
 
   // ── BACK TO TOP ──
   const backTop = document.getElementById('backTop');
