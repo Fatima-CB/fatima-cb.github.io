@@ -875,8 +875,8 @@
   /* ── FOOTER ── */
   .bottom-band {
     background: white;
-    border-radius: 20px; padding: 18px 44px;
-    display: flex; justify-content: space-between; align-items: center;
+    border-radius: 20px; padding: 18px 32px;
+    display: flex; justify-content: center; align-items: center;
     flex-wrap: wrap; gap: 16px;
     border: 1px solid rgba(44,37,32,0.06);
     opacity: 0; animation: cardIn 0.8s 0.6s ease forwards;
@@ -884,6 +884,7 @@
     margin-bottom: 20px;
     transition: box-shadow 0.5s ease;
     position: relative;
+    text-align: center;
   }
   .bottom-band:hover {
     box-shadow: 0 6px 32px rgba(201,104,90,0.12), 0 0 0 1px rgba(242,213,213,0.4);
@@ -891,39 +892,19 @@
 
   .band-left {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 22px; font-weight: 600; color: var(--warm);
-    position: relative; z-index: 1;
+    font-size: 20px; font-weight: 600; color: #1A1410;
+    width: 100%; text-align: center;
   }
-  .band-left span { color: #1A1410; font-weight: 700; }
 
   .band-center {
-    display: flex; gap: 12px; align-items: center;
+    display: flex; gap: 10px; align-items: center;
+    justify-content: center; flex-wrap: wrap; width: 100%;
   }
 
-  /* Icônes de liens */
-  .band-icon {
-    width: 36px; height: 36px; border-radius: 10px;
-    background: rgba(44,37,32,0.05); color: var(--mid);
-    display: flex; align-items: center; justify-content: center;
-    text-decoration: none; border: 1px solid rgba(44,37,32,0.08);
-    transition: all 0.3s ease;
-  }
-  .band-icon:hover {
-    background: var(--blush); color: var(--accent1);
-    border-color: rgba(201,104,90,0.2);
-    transform: translateY(-3px); box-shadow: 0 6px 16px rgba(201,104,90,0.15);
-  }
-  .band-icon-li:hover {
-    background: #0A66C2; color: white;
-    border-color: #0A66C2;
-    box-shadow: 0 6px 16px rgba(10,102,194,0.25);
-  }
-
-  /* Disponible */
   .band-avail {
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 8px;
     background: rgba(255,255,255,0.5); border: 1px solid rgba(44,37,32,0.12);
-    border-radius: 100px; padding: 9px 20px;
+    border-radius: 100px; padding: 8px 16px;
     font-family: var(--font); font-size: 12px;
     color: var(--warm); letter-spacing: 0.5px;
     transition: all 0.4s ease; cursor: default;
@@ -1463,21 +1444,18 @@
 
   <!-- FOOTER -->
   <div class="bottom-band">
-    <div class="band-left">
-      <span>Fatima Charef</span>
-    </div>
+    <div class="band-left"><span>Fatima Charef</span></div>
     <div class="band-center">
-      <a class="chip" href="https://f-charef-projet.com/" target="_blank">
-        <span class="chip-icon">🌐</span> f-charef-projet.com
+      <a class="chip chip-portfolio" href="https://f-charef-projet.com/" target="_blank">
+        <span class="chip-icon">🌐</span><span class="chip-text"> f-charef-projet.com</span>
       </a>
       <a class="chip chip-linkedin" href="https://www.linkedin.com/in/fatima-charef/" target="_blank">
-        <span class="chip-in">in</span>
-        <span class="chip-text"> linkedin.com/in/fatima-charef</span>
+        <span class="chip-in">in</span><span class="chip-text"> linkedin.com/in/fatima-charef</span>
       </a>
-    </div>
-    <div class="band-avail">
-      <div class="avail-light"></div>
-      <span class="avail-text">Disponible</span>
+      <div class="band-avail">
+        <div class="avail-light"></div>
+        <span class="avail-text">Disponible</span>
+      </div>
     </div>
   </div>
 
